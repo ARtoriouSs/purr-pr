@@ -7,12 +7,35 @@ require 'pry' # TODO
 
 module Purr
   def self.title
-    editor = Editor.new(:title)
+    @title = edit(:title)
+  end
+
+  def self.body
+    @body = edit(:body)
+  end
+
+  def self.assignee(assignee)
+    @assignee = assignee
+  end
+
+  def self.self_assign
+    assignee('@me')
+  end
+
+  private
+
+  def edit(subject)
+    editor = Editor.new(subject)
 
     catch(:abort) { yield(editor) }
 
-    if editor.interrupted?
-      puts 'aborted' # TODO
-    end
+    interrupt if editor.interrupted?
+
+    editor.content
+  end
+
+  def interrupt
+    puts 'aborted'
+    exit
   end
 end
