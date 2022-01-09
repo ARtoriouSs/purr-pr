@@ -7,7 +7,7 @@ require 'purr/version'
 require_relative "lib/purr/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = 'purr'
+  spec.name        = 'purr-pr'
   spec.version     = Purr::VERSION
   spec.author      = 'Alexander Teslovskiy'
   spec.email       = 'artoriousso@gmail.com'
@@ -27,10 +27,10 @@ Gem::Specification.new do |spec|
 
   spec.require_paths = ['lib']
   spec.bindir        = 'bin'
+  spec.executables   << 'purr'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |file| file.match(%r{^spec/}) }
   spec.test_files    = `git ls-files -- spec`.split("\n")
-  spec.executables   = `git ls-files -- #{spec.bindir}`.split("\n").map { |file| File.basename(file) }
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 13.0'
