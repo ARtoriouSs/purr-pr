@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'purr/version'
-require_relative 'purr/editor.rb'
+require_relative 'purr_pr/version'
+require_relative 'purr_pr/editor.rb'
 
 require 'pry' # TODO
 
-module Purr
+module PurrPr
   def self.title(&block)
     @title = edit(:title, &block)
   end

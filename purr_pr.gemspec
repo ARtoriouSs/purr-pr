@@ -2,27 +2,27 @@
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'purr/version'
+require 'purr_pr/version'
 
-require_relative "lib/purr/version"
+require_relative "lib/purr_pr/version"
 
 Gem::Specification.new do |spec|
   spec.name        = 'purr-pr'
-  spec.version     = Purr::VERSION
+  spec.version     = PurrPr::VERSION
   spec.author      = 'Alexander Teslovskiy'
   spec.email       = 'artoriousso@gmail.com'
   spec.summary     = ''
   spec.description = ''
-  spec.homepage    = 'https://github.com/ARtoriouSs/purr'
+  spec.homepage    = 'https://github.com/ARtoriouSs/purr-pr'
   spec.license     = 'MIT'
 
   spec.metadata = {
-    'documentation_uri' => 'https://github.com/ARtoriouSs/purr/blob/master/README.md',
-    'bug_tracker_uri'   => 'https://github.com/ARtoriouSs/purr/issues',
-    'source_code_uri'   => 'https://github.com/ARtoriouSs/purr',
-    'changelog_uri'     => 'https://github.com/ARtoriouSs/purr/blob/master/CHANGELOG.md',
-    'wiki_uri'          => 'https://github.com/ARtoriouSs/purr/wiki',
-    'homepage_uri'      => 'https://github.com/ARtoriouSs/purr'
+    'documentation_uri' => 'https://github.com/ARtoriouSs/purr-pr/blob/master/README.md',
+    'bug_tracker_uri'   => 'https://github.com/ARtoriouSs/purr-pr/issues',
+    'source_code_uri'   => 'https://github.com/ARtoriouSs/purr-pr',
+    'changelog_uri'     => 'https://github.com/ARtoriouSs/purr-pr/blob/master/CHANGELOG.md',
+    'wiki_uri'          => 'https://github.com/ARtoriouSs/purr-pr/wiki',
+    'homepage_uri'      => 'https://github.com/ARtoriouSs/purr-pr'
   }
 
   spec.require_paths = ['lib']

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    purr (0.1.0)
+    purr-pr (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -33,7 +33,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 2.0)
   pry
-  purr!
+  purr-pr!
   rake (~> 13.0)
   rspec (~> 3.0)
 
