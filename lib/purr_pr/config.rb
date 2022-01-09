@@ -22,6 +22,14 @@ class PurrPr
       assignee('@me')
     end
 
+    def values
+      OpenStruct.new(
+        title:    @title,
+        body:     @body,
+        assignee: @assignee
+      )
+    end
+
     private
 
     def edit(subject, &block)

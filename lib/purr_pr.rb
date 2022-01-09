@@ -21,9 +21,9 @@ class PurrPr
     # TODO - proxy other args + override existing
     system <<~SHELL
       gh pr create \
-        --title #{config.title} \
-        --body #{config.body} \
-        --assignee #{config.assignee}
+        --title #{config.values.title} \
+        --body #{config.values.body} \
+        --assignee #{config.values.assignee}
     SHELL
   end
 

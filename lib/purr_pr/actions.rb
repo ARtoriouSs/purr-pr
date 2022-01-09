@@ -35,7 +35,7 @@ class PurrPr
     end
 
     def interrupted?
-      @interrupted
+      !!@interrupted
     end
 
     private
