@@ -7,12 +7,11 @@ require 'pry' # TODO
 
 module Purr
   def self.title
-    should_abort = catch(:abort) do
-      editor = Editor.new(:title)
-      yield(editor)
-    end
+    editor = Editor.new(:title)
 
-    if should_abort
+    catch(:abort) { yield(editor) }
+
+    if editor.interrupted?
       puts 'aborted' # TODO
     end
   end

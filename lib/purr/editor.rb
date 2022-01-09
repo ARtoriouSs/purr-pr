@@ -1,11 +1,18 @@
+# frozen_string_literal: true
+
 require 'securerandom'
+
+require_relative 'text_objects'
+require_relative 'actions'
 
 module Purr
   class Editor
+    include TextObjects
+    include Actions
+
     attr_reader :content, :subject
 
-    def initialize(subject)
-      @subject = subject.to_s
+    def initialize(subject) @subject = subject.to_s
       @content = ''
     end
 
@@ -21,30 +28,26 @@ module Purr
       @content.gsub!(text, with)
     end
 
-    #def newline
-      #@content += "\n"
-    #end
+    def edit(format: :md)
+      name = subject + SecureRandom.hex(8)
+      format = ".#{format}" unless format.nil?
 
-    #def ask(message, default: nil)
-      #puts(message)
-      #input = gets.strip
-    #end
-
-    def editor
-      file = Tempfile.new(subject + SecureRandom.hex(8))
+      file = Tempfile.new([name, format])
       file.write(content)
       file.rewind
 
-      system("$VISUAL #{file.path}") # TODO - $EDITOR
+      editor = `echo $VISUAL`.chomp || `echo $EDITOR`.chomp || 'vim'
+
+      system("#{editor} #{file.path}")
 
       @content = file.read
     ensure
       file.close
     end
-    alias_method :edit, :editor
+    alias_method :editor, :edit
 
     def confirm
-      print <<-TEXT
+      text = <<~TEXT
         Current #{subject}:
 
         #{content}
@@ -52,8 +55,12 @@ module Purr
         Continue? (Y/N)
       TEXT
 
-      throw(:abort, true) unless gets.strip.downcase == 'y'
+      ask_yn(text, decline: -> { interrupt })
     end
     alias_method :confirmation, :confirm
+  end
+
+  def copy_template(path = '.github/pull_request_template.md')
+    @content = read_file(path)
   end
 end
