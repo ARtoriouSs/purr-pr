@@ -16,6 +16,15 @@ module Purr
       @content = ''
     end
 
+    def evaluate(&block)
+      @caller_binding = eval('self', block.binding)
+      instance_eval(&block)
+    end
+
+    def method_missing(method, *args, &block)
+      @caller_binding.send(method, *args, &block)
+    end
+
     def append(text)
       @content += text
     end
@@ -60,7 +69,7 @@ module Purr
     alias_method :confirmation, :confirm
   end
 
-  def copy_template(path = '.github/pull_request_template.md')
+  def use_template(path = '.github/pull_request_template.md')
     @content = read_file(path)
   end
 end

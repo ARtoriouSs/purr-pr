@@ -6,12 +6,12 @@ require_relative 'purr/editor.rb'
 require 'pry' # TODO
 
 module Purr
-  def self.title
-    @title = edit(:title)
+  def self.title(&block)
+    @title = edit(:title, &block)
   end
 
-  def self.body
-    @body = edit(:body)
+  def self.body(&block)
+    @body = edit(:body, &block)
   end
 
   def self.assignee(assignee)
@@ -24,10 +24,10 @@ module Purr
 
   private
 
-  def edit(subject)
+  def edit(subject, &block)
     editor = Editor.new(subject)
 
-    catch(:abort) { yield(editor) }
+    catch(:abort) { editor.evaluate(&block) }
 
     interrupt if editor.interrupted?
 
