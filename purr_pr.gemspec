@@ -11,8 +11,8 @@ Gem::Specification.new do |spec|
   spec.version     = PurrPr::VERSION
   spec.author      = 'Alexander Teslovskiy'
   spec.email       = 'artoriousso@gmail.com'
-  spec.summary     = ''
-  spec.description = ''
+  spec.summary     = 'A CLI pull request formatter'
+  spec.description = 'Purr PR is a tool to automate pull request formatting via GitHub CLI'
   spec.homepage    = 'https://github.com/ARtoriouSs/purr-pr'
   spec.license     = 'MIT'
 
