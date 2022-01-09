@@ -2,40 +2,34 @@
 
 require_relative 'purr_pr/version'
 require_relative 'purr_pr/editor.rb'
+require_relative 'purr_pr/config.rb'
 
 require 'pry' # TODO
 
-module PurrPr
-  def self.title(&block)
-    @title = edit(:title, &block)
+class PurrPr
+  attr_reader :config_file_path, :config
+
+  DEFAULT_CONFIG_FILE_PATH = 'purr.rb'
+
+  def initialize(config_file_path = DEFAULT_CONFIG_FILE_PATH)
+    @config_file_path = config_file_path
+    @config = Config.new
   end
 
-  def self.body(&block)
-    @body = edit(:body, &block)
-  end
-
-  def self.assignee(assignee)
-    @assignee = assignee
-  end
-
-  def self.self_assign
-    assignee('@me')
+  def create
+    config.instance_eval(config_code)
+    # TODO - proxy other args + override existing
+    system <<~SHELL
+      gh pr create \
+        --title #{config.title} \
+        --body #{config.body} \
+        --assignee #{config.assignee}
+    SHELL
   end
 
   private
 
-  def edit(subject, &block)
-    editor = Editor.new(subject)
-
-    catch(:abort) { editor.evaluate(&block) }
-
-    interrupt if editor.interrupted?
-
-    editor.content
-  end
-
-  def interrupt
-    puts 'aborted'
-    exit
+  def config_code
+    File.read(config_file_path)
   end
 end

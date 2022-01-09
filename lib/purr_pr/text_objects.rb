@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PurrPr
+class PurrPr
   module TextObjects
     def newline(count = 1)
       "\n" * count

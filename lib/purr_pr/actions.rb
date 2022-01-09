@@ -2,7 +2,7 @@
 
 require 'io/console'
 
-module PurrPr
+class PurrPr
   module Actions
     def ask(message, default: nil, multiline: false, newline: true)
       puts(message)

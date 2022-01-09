@@ -5,7 +5,7 @@ require 'securerandom'
 require_relative 'text_objects'
 require_relative 'actions'
 
-module PurrPr
+class PurrPr
   class Editor
     include TextObjects
     include Actions
