@@ -18,13 +18,29 @@ class PurrPr
 
   def create
     config.instance_eval(config_code)
-    # TODO - proxy other args + override existing
-    system <<~SHELL
-      gh pr create \
-        --title #{config.values.title} \
-        --body #{config.values.body} \
-        --assignee #{config.values.assignee}
-    SHELL
+
+    command = 'gh pr create'
+    command += " --title '#{config.values.title}'" if config.values.title
+    command += " --body '#{config.values.body}'"
+    command += " --assignee #{config.values.assignee}" if config.values.assignee
+    command += " --base #{config.values.base}" if config.values.base
+    command += ' --draft' if config.values.draft
+    command += ' --no-maintainer-edit' unless config.values.maintainer_edit
+
+    config.values.labels.each do |label|
+      command += " --label #{label}"
+    end
+
+    config.values.reviewers.each do |reviewer|
+      command += " --reviewer #{reviewer}"
+    end
+
+    # The later arguments will override the earlier ones,
+    # e.g. after `gh pr create --title a --title b` the title will equal 'b',
+    # so explicit options will override the config
+    command += ARGV.join(' ').prepend(' ')
+
+    system(command)
   end
 
   private
