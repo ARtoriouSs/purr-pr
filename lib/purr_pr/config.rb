@@ -6,6 +6,11 @@ class PurrPr
   class Config
     attr_reader :title, :body, :assignee
 
+    def initialize
+      # the defaults if the setter is not called
+      @maintainer_edit = true
+    end
+
     def title(&block)
       @title = edit(:title, &block)
     end
@@ -22,11 +27,40 @@ class PurrPr
       assignee('@me')
     end
 
+    def maintainer_edit(enabled)
+      @maintainer_edit = enabled
+    end
+
+    def no_maintainer_edit
+      maintainer_edit(false)
+    end
+
+    def base(base_branch)
+      @base = base_branch
+    end
+
+    def draft(enabled = true)
+      @draft = enabled
+    end
+
+    def labels(labels)
+      @labels = labels
+    end
+
+    def reviewers(reviewers)
+      @reviewers = reviewers
+    end
+
     def values
       OpenStruct.new(
-        title:    @title,
-        body:     @body,
-        assignee: @assignee
+        title:           @title,
+        body:            @body,
+        assignee:        @assignee,
+        base:            @base,
+        draft:           @draft,
+        reviewers:       @reviewers,
+        labels:          @labels,
+        maintainer_edit: @maintainer_edit
       )
     end
 
