@@ -5,5 +5,9 @@ class PurrPr
     def newline(count = 1)
       "\n" * count
     end
+
+    def space(count = 1)
+      ' ' * count
+    end
   end
 end
