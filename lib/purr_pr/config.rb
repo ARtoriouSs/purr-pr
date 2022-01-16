@@ -15,12 +15,12 @@ class PurrPr
       @labels = []
     end
 
-    def title(&block)
-      @title = edit(:title, &block)
+    def title(initial_content = '', &block)
+      @title = edit(:title, content: initial_content, &block)
     end
 
-    def body(&block)
-      @body = edit(:body, &block)
+    def body(initial_content = '', &block)
+      @body = edit(:body, content: initial_content, &block)
     end
 
     def assignee(assignee)
@@ -78,10 +78,10 @@ class PurrPr
 
     private
 
-    def edit(subject, &block)
-      editor = Editor.new(subject)
+    def edit(subject, content: '', &block)
+      editor = Editor.new(subject, content: content)
 
-      catch(:abort) { editor.evaluate(&block) }
+      catch(:abort) { editor.evaluate(&block) } if block_given?
 
       interrupt if editor.interrupted?
 

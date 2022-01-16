@@ -15,9 +15,9 @@ class PurrPr
 
     attr_reader :content, :subject
 
-    def initialize(subject)
+    def initialize(subject, content: '')
       @subject = subject.to_s
-      @content = ''
+      @content = content
     end
 
     def evaluate(&block)
