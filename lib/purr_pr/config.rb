@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'ostruct'
+
 require_relative 'editor.rb'
 
 class PurrPr
@@ -9,6 +11,8 @@ class PurrPr
     def initialize
       # the defaults if the setter is not called
       @maintainer_edit = true
+      @reviewers = []
+      @labels = []
     end
 
     def title(&block)
@@ -44,11 +48,19 @@ class PurrPr
     end
 
     def labels(labels)
-      @labels = labels
+      @labels += labels
+    end
+
+    def label(label)
+      @labels << label
     end
 
     def reviewers(reviewers)
-      @reviewers = reviewers
+      @reviewers += reviewers
+    end
+
+    def reviewer(reviewer)
+      @reviewers << reviewer
     end
 
     def values

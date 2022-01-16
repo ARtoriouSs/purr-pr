@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# TODO
-#require 'purr_pr'
-require_relative '../lib/purr_pr'
+require 'purr_pr'
 
 PurrPr.new.create

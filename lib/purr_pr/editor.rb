@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'securerandom'
+require 'tempfile'
 
 require_relative 'text_objects'
 require_relative 'actions'
@@ -67,9 +68,9 @@ class PurrPr
       ask_yn(text, decline: -> { interrupt })
     end
     alias_method :confirmation, :confirm
-  end
 
-  def use_template(path = '.github/pull_request_template.md')
-    @content = read_file(path)
+    def use_template(path = '.github/pull_request_template.md')
+      @content = read_file(path)
+    end
   end
 end

@@ -4,8 +4,6 @@ require_relative 'purr_pr/version'
 require_relative 'purr_pr/editor.rb'
 require_relative 'purr_pr/config.rb'
 
-require 'pry' # TODO
-
 class PurrPr
   attr_reader :config_file_path, :config
 
