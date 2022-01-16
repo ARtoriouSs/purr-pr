@@ -5,15 +5,18 @@ require 'tempfile'
 
 require_relative 'text_objects'
 require_relative 'actions'
+require_relative 'shell_helpers'
 
 class PurrPr
   class Editor
     include TextObjects
     include Actions
+    include ShellHelpers
 
     attr_reader :content, :subject
 
-    def initialize(subject) @subject = subject.to_s
+    def initialize(subject)
+      @subject = subject.to_s
       @content = ''
     end
 
@@ -36,6 +39,14 @@ class PurrPr
 
     def replace(text, with: '')
       @content.gsub!(text, with)
+    end
+
+    def delete(text)
+      replace(text, with: '')
+    end
+
+    def clear
+      @content = ''
     end
 
     def edit(format: :md)

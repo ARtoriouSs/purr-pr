@@ -4,6 +4,8 @@ require_relative 'purr_pr/version'
 require_relative 'purr_pr/editor.rb'
 require_relative 'purr_pr/config.rb'
 
+require 'tempfile'
+
 class PurrPr
   attr_reader :config_file_path, :config
 
@@ -17,9 +19,14 @@ class PurrPr
   def create
     config.instance_eval(config_code)
 
+    # use file for body to avoid quotes issues
+    body_file = Tempfile.new
+    body_file.write(config.values.body)
+    body_file.rewind
+
     command = 'gh pr create'
     command += " --title '#{config.values.title}'" if config.values.title
-    command += " --body '#{config.values.body}'"
+    command += " --body-file '#{body_file.path}'"
     command += " --assignee #{config.values.assignee}" if config.values.assignee
     command += " --base #{config.values.base}" if config.values.base
     command += ' --draft' if config.values.draft
@@ -39,6 +46,8 @@ class PurrPr
     command += ARGV.join(' ').prepend(' ')
 
     system(command)
+  ensure
+    body_file.close
   end
 
   private

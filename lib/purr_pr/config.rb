@@ -9,7 +9,7 @@ class PurrPr
     attr_reader :title, :body, :assignee
 
     def initialize
-      # the defaults if the setter is not called
+      # defaults - if setter is not called
       @maintainer_edit = true
       @reviewers = []
       @labels = []
