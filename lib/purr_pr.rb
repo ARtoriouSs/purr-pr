@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require_relative 'purr_pr/version'
-require_relative 'purr_pr/editor.rb'
-require_relative 'purr_pr/config.rb'
+require_relative 'purr_pr/editor'
+require_relative 'purr_pr/config'
 
 require 'tempfile'
 
@@ -13,7 +13,7 @@ class PurrPr
 
   def initialize(config_file_path = DEFAULT_CONFIG_FILE_PATH)
     @config_file_path = config_file_path
-    @config = Config.new
+    @config = Config.new(ARGV)
   end
 
   def create
@@ -39,11 +39,6 @@ class PurrPr
     config.values.reviewers.each do |reviewer|
       command += " --reviewer #{reviewer}"
     end
-
-    # The later arguments will override the earlier ones,
-    # e.g. after `gh pr create --title a --title b` the title will equal 'b',
-    # so explicit options will override the config
-    command += ARGV.join(' ').prepend(' ')
 
     system(command)
   ensure

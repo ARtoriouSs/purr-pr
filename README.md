@@ -28,11 +28,11 @@ This gem using [GitHub CLI tool](https://github.com/cli/cli) to conveniently cre
 
 ## Usage
 
-After installing gem, create a `purr_pr.rb` file in the root of your git project. This file will describe your PRs.
+After installing gem, create a `purr.rb` file in the root of your git project. This file will describe your PRs.
 
 ### Configuration
 
-Now you can use `purr_pr.rb` file to create your formatting script
+Now you can use `purr.rb` file to create your formatting script
 
 #### Body
 
@@ -43,8 +43,6 @@ body do
   # your edits
 end
 ```
-
-##### Templates
 
 First of all the `use_template` method will simply copy the contents of `.github/pull_request_template.md` to a body buffer.
 To use any other file as a template you can provide the path to it as an argument:
@@ -104,11 +102,11 @@ You can conditionally clear the buffer with the `clear` method:
 ```ruby
 body do
   use_template
-  clear if ARGV.first == '--empty'
+  clear if argv.first == '--empty'
 end
 ```
 
-The above code will create the PR with empty body if the first argument is '--empty'
+The above code will create the PR with empty body if the first argument is '--empty'.
 
 ##### Manual edits
 
@@ -143,10 +141,13 @@ There are some syntax sugar and helpers to be used as the arguments of above met
 body do
   append newline(3)     # => '\n\n\n'
   append space          # => ' '
-  append commits.last   # => Latest commit
-  append current_branch # => Current git branch
+  append current_branch # => Current git branch name
+  append commits.last   # => Latest commit (for the current branch) message
+  clear if argv.first == '--foo' # command line arguments are available too
 end
 ```
+
+The only argument for `newline` and `space` is their count.
 
 ##### Actions
 
@@ -228,8 +229,8 @@ To assign someone to a PR use `assignee` or `self_assign` options:
 
 ```ruby
 assignee '@JohnDoe'
-assignee '@me' # self-assign
-self_assign    # the same as above
+# or to assign yourself:
+self_assign
 ```
 
 #### Base branch
@@ -284,7 +285,6 @@ no_maintainer_edit # the same as above
 ### Finally, create a PR!
 
 Simply call `purr` and it will create a PR for you via [GitHub CLI](https://github.com/cli/cli) according to your configuration file. Note that you may need to log in first with `gh auth login`.
-To override any config values you can append them to `purr` as a `gh pr create` [arguments](https://cli.github.com/manual/gh_pr_create), e.g. `purr --body foo` will create a PR with body 'foo' instead of the value from `purr.rb`.
 
 #### Scripting is the key
 
@@ -293,7 +293,7 @@ A nice example:
 
 ```ruby
 title 'Story: ' do
-  story_number = current_branch.gsub('/').first
+  story_number = current_branch.gsub('/').first # e.g. '1337/do-something'
 
   append story_number
   append space
@@ -311,21 +311,20 @@ body do
   use_template
 
   # Story number
-  replace '<STORY-NUMBER>', with: story_number
+  replace '<STORY NUMBER>', with: story_number
 
   # PR Title and details
   if commits.count == 1
-    replace 'Story Title', with: commits.last
-    replace 'Details go here', with: commits.last
+    story_title = details = commits.last
   else
     story_title = ask 'Title: ', default: commits.last
     details = ask 'Details: ', default: commits.last
-    replace 'Story Title', with: story_title
-    replace 'Details go here', with: details
   end
+  replace 'Story Title', with: story_title
+  replace 'Details go here', with: details
 
   # check the PR type checkboxes
-  case ARGV.first
+  case argv.first
   when '--feature'
     replace '- [ ] New feature', with: '- [x] New feature'
   when '--bugfix'
@@ -337,10 +336,10 @@ body do
   editor # to ensure and fix something
 end
 
-draft
+draft if argv.include?('--draft')
 self_assign
-reviewer '@MyTeamLeadReviever'
-label 'bug' if ARGV.first == '--bugfix'
+reviewer '@MyTeamLeadReviewer'
+label 'bug' if argv.first == '--bugfix'
 ```
 
 ## Development

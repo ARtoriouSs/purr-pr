@@ -6,9 +6,10 @@ require_relative 'editor.rb'
 
 class PurrPr
   class Config
-    attr_reader :title, :body, :assignee
+    attr_reader :title, :body, :assignee, :argv
 
-    def initialize
+    def initialize(argv = [])
+      @argv = argv
       # defaults - if setter is not called
       @maintainer_edit = true
       @reviewers = []
