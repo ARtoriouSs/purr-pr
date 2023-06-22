@@ -7,7 +7,7 @@ Tired of formatting/writing the same PR text over and over again? Use Purr PR to
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'purr'
+gem 'purr-pr'
 ```
 
 And then execute:
@@ -19,7 +19,7 @@ bundle install
 Or install it yourself as:
 
 ```bash
-gem install purr
+gem install purr-pr
 ```
 
 ### Dependencies
@@ -268,10 +268,17 @@ To add reviewers use `reviewers` or `reviewer` options:
 
 ```ruby
 reviewers ['@JohnDoe', '@BoJackHorseman'] # to add as an array
-reviewer '@FooBar' # to add a single label
+reviewer '@FooBar' # to add a single reviewer
 ```
 
 The above code will add `@JohnDoe`, `@BoJackHorseman` and `@FooBar` as the reviewers to the PR
+
+Works with teams as well:
+
+```ruby
+reviewer 'my_organisation/code_revievers'
+```
+
 
 #### Disabling maintainer edit
 
@@ -338,7 +345,7 @@ end
 
 draft if argv.include?('--draft')
 self_assign
-reviewer '@MyTeamLeadReviewer'
+reviewer '@MyFellowReviewer'
 label 'bug' if argv.first == '--bugfix'
 ```
 
